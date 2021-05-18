@@ -35,6 +35,25 @@ namespace sistema_entrega.Entity
                 }
             };
 
+            this.Telefones = new List<Telefone>()
+            {
+                new Telefone()
+                {
+                    DDD = "21",
+                    DDI = "+55",
+                    Numero = "99999-9999",
+                    TipoTelefone = TipoTelefone.Particular
+                },
+                new Telefone()
+                {
+                    DDD = "21",
+                    DDI = "+55",
+                    Numero = "99999-0000",
+                    TipoTelefone = TipoTelefone.Corporativo,
+                    Ramal = "1422"
+                },
+            };
+
         }
 
         public string NomeCompleto { get; set; }
@@ -42,6 +61,7 @@ namespace sistema_entrega.Entity
         public string Documento { get; set; }
         public DateTime DataNascimento { get; set; }
         public List<Endereco> Enderecos { get; set; }
+        public List<Telefone> Telefones { get; set; }
 
         public Endereco ObterEndereco(TipoEnderecoEnum tipoEndereco)
         {

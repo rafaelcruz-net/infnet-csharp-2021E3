@@ -8,7 +8,7 @@ namespace sistema_entrega
         static void Main(string[] args)
         {
             Cliente cliente = new Cliente();
-            
+
             Console.WriteLine($"Nome do cliente: {cliente.NomeCompleto}");
             Console.Read();
         }
