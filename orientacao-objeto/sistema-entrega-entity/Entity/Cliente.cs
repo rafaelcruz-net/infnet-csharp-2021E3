@@ -1,3 +1,4 @@
+using sistema_entrega_entity.Repository;
 using System;
 using System.Collections.Generic;
 
@@ -56,6 +57,7 @@ namespace sistema_entrega.Entity
 
         }
 
+        public int Id { get; set; }
         public string NomeCompleto { get; set; }
         public string Email { get; set; }
         public string Documento { get; set; }
@@ -72,6 +74,11 @@ namespace sistema_entrega.Entity
             }
 
             return null;
+        }
+
+        public void Save(IRepositoryCliente repository)
+        {
+            repository.Create(this);
         }
 
     }
