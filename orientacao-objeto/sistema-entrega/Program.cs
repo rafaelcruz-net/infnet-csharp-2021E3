@@ -9,6 +9,8 @@ namespace sistema_entrega
 {
     class Program
     {
+        private static sistema_entrega_repositorio.Arquivo.RepositoryCliente repositoryCliente = new sistema_entrega_repositorio.Arquivo.RepositoryCliente();
+
         static void Main(string[] args)
         {
             Console.WriteLine("==============================================");
@@ -16,6 +18,10 @@ namespace sistema_entrega
             Console.WriteLine("==============================================");
 
             var sair = false;
+            
+            //CARREGA A BASE DE DADOS
+            repositoryCliente.LerArquivo();
+
             while (!sair)
             {
                 ExibeOpções();
@@ -40,7 +46,10 @@ namespace sistema_entrega
                         break;
                     case "q":
                         Console.WriteLine("Até Logo :)");
+                        //GRAVA AS INFORMAÇÕES NO ARQUIVO
+                        repositoryCliente.GravaArquivo();
                         sair = true;
+
                         break;
                     default:
                         Console.WriteLine("Opção Invalida!");
@@ -53,11 +62,9 @@ namespace sistema_entrega
 
         private static void ListarTodosClientes()
         {
-            IRepositoryCliente repository = new sistema_entrega_repositorio.Memoria.RepositoryCliente();
-
             Console.WriteLine("Exibindo Clientes");
             Console.WriteLine("");
-            var clientes = repository.GetAll();
+            var clientes = repositoryCliente.GetAll();
             Console.WriteLine(JsonConvert.SerializeObject(clientes, Formatting.Indented));
             Console.WriteLine("");
             Console.WriteLine("");
@@ -69,8 +76,7 @@ namespace sistema_entrega
             Console.WriteLine("Digite o identificado do cliente");
             
             var id = Convert.ToInt32(Console.ReadLine());
-            IRepositoryCliente repository = new sistema_entrega_repositorio.Memoria.RepositoryCliente();
-            var cliente = repository.GetCliente(id);
+            var cliente = repositoryCliente.GetCliente(id);
 
             Console.WriteLine("");
             Console.WriteLine($"Exibindo Cliente com o identificador {id}");
@@ -83,7 +89,21 @@ namespace sistema_entrega
 
         private static void ExcluirCliente()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("");
+            Console.WriteLine("Digite o identificador do cliente para realizar a exclusão");
+
+            var id = Convert.ToInt32(Console.ReadLine());
+
+            var cliente = repositoryCliente.GetCliente(id);
+
+            if (cliente == null)
+                Console.WriteLine("Cliente não encontrado");
+            else
+            {
+                repositoryCliente.Delete(cliente);
+                Console.WriteLine("Cliente excluido com sucesso");
+            }
+
         }
 
         private static void AtualizarCliente()
@@ -94,9 +114,7 @@ namespace sistema_entrega
         private static void CadastroCliente()
         {
             var cliente = new Cliente();
-            IRepositoryCliente repository = new sistema_entrega_repositorio.Memoria.RepositoryCliente();
-
-            cliente.Save(repository);
+            cliente.Save(repositoryCliente);
             Console.WriteLine("Cadastro Realizado com sucesso!");
 
         }
