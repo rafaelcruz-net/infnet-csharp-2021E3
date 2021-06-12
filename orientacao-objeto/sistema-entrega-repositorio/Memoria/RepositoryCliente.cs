@@ -12,7 +12,7 @@ namespace sistema_entrega_repositorio.Memoria
 
         public void Create(Cliente cliente)
         {
-            cliente.Id = RepositoryCliente.Clientes.Count + 1;
+            cliente.IdCliente = RepositoryCliente.Clientes.Count + 1;
             RepositoryCliente.Clientes.Add(cliente);
         }
 
@@ -28,7 +28,7 @@ namespace sistema_entrega_repositorio.Memoria
 
         public Cliente GetCliente(int id)
         {
-            return RepositoryCliente.Clientes.Find(x => x.Id == id);
+            return RepositoryCliente.Clientes.Find(x => x.IdCliente == id);
         }
 
         public void Update(Cliente cliente, int id)

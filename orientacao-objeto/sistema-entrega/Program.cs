@@ -9,7 +9,7 @@ namespace sistema_entrega
 {
     class Program
     {
-        private static sistema_entrega_repositorio.Arquivo.RepositoryCliente repositoryCliente = new sistema_entrega_repositorio.Arquivo.RepositoryCliente();
+        private static sistema_entrega_repositorio.Database.RepositorioCliente repositoryCliente = new sistema_entrega_repositorio.Database.RepositorioCliente();
 
         static void Main(string[] args)
         {
@@ -18,9 +18,6 @@ namespace sistema_entrega
             Console.WriteLine("==============================================");
 
             var sair = false;
-            
-            //CARREGA A BASE DE DADOS
-            repositoryCliente.LerArquivo();
 
             while (!sair)
             {
@@ -46,10 +43,7 @@ namespace sistema_entrega
                         break;
                     case "q":
                         Console.WriteLine("Até Logo :)");
-                        //GRAVA AS INFORMAÇÕES NO ARQUIVO
-                        repositoryCliente.GravaArquivo();
                         sair = true;
-
                         break;
                     default:
                         Console.WriteLine("Opção Invalida!");
@@ -108,15 +102,49 @@ namespace sistema_entrega
 
         private static void AtualizarCliente()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("");
+            Console.WriteLine("Digite o identificado do cliente");
+
+            var id = Convert.ToInt32(Console.ReadLine());
+            var cliente = repositoryCliente.GetCliente(id);
+
+            if (cliente == null)
+            {
+                Console.WriteLine("Cliente não encontrado");
+            }
+            else
+            {
+                Console.WriteLine("Informe o nome do cliente");
+                cliente.Nome = Console.ReadLine();
+
+                Console.WriteLine("Informe o Email do cliente");
+                cliente.Email = Console.ReadLine();
+
+                Console.WriteLine("Informe o Endereco do cliente");
+                cliente.Endereco = Console.ReadLine();
+
+                repositoryCliente.Update(cliente, id);
+
+                Console.WriteLine("Cliente atualizado com sucesso!");
+            }
         }
 
         private static void CadastroCliente()
         {
             var cliente = new Cliente();
-            cliente.Save(repositoryCliente);
-            Console.WriteLine("Cadastro Realizado com sucesso!");
 
+            Console.WriteLine("Informe o nome do cliente");
+            cliente.Nome = Console.ReadLine();
+
+            Console.WriteLine("Informe o Email do cliente");
+            cliente.Email = Console.ReadLine();
+
+            Console.WriteLine("Informe o Endereco do cliente");
+            cliente.Endereco = Console.ReadLine();
+
+            repositoryCliente.Create(cliente);
+
+            Console.WriteLine("Cadastro Realizado com sucesso!");
         }
 
         private static void ExibeOpções()

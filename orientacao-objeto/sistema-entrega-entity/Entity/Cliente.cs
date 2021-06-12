@@ -8,78 +8,14 @@ namespace sistema_entrega.Entity
     {
         public Cliente()
         {
-            this.NomeCompleto = "Nome 1";
-            this.Documento = "1234567";
-            this.Email = "teste@teste.com";
-            this.DataNascimento = new DateTime(2000, 12, 01);
-            this.Enderecos = new List<Endereco>()
-            {
-                new Endereco()
-                {
-                    Bairro = "Teste",
-                    CEP = "00000-000",
-                    Cidade = "Dummy",
-                    Complemento = "Apto 303",
-                    Estado = "Rio de Janeiro",
-                    Logradouro = "Rua do teste",
-                    TipoEndereco = TipoEnderecoEnum.Residencial
-                },
-                new Endereco()
-                {
-                    Bairro = "Teste Comercial",
-                    CEP = "00000-001",
-                    Cidade = "Dummy",
-                    Complemento = "SL 989",
-                    Estado = "Rio de Janeiro",
-                    Logradouro = "Rua do teste do comercial",
-                    TipoEndereco = TipoEnderecoEnum.Comercial
-                }
-            };
-
-            this.Telefones = new List<Telefone>()
-            {
-                new Telefone()
-                {
-                    DDD = "21",
-                    DDI = "+55",
-                    Numero = "99999-9999",
-                    TipoTelefone = TipoTelefone.Particular
-                },
-                new Telefone()
-                {
-                    DDD = "21",
-                    DDI = "+55",
-                    Numero = "99999-0000",
-                    TipoTelefone = TipoTelefone.Corporativo,
-                    Ramal = "1422"
-                },
-            };
+          
 
         }
 
-        public int Id { get; set; }
-        public string NomeCompleto { get; set; }
+        public int IdCliente { get; set; }
+        public string Nome { get; set; }
         public string Email { get; set; }
-        public string Documento { get; set; }
-        public DateTime DataNascimento { get; set; }
-        public List<Endereco> Enderecos { get; set; }
-        public List<Telefone> Telefones { get; set; }
-
-        public Endereco ObterEndereco(TipoEnderecoEnum tipoEndereco)
-        {
-            foreach (var endereco in this.Enderecos)
-            {
-                if (endereco.TipoEndereco == tipoEndereco)
-                    return endereco;
-            }
-
-            return null;
-        }
-
-        public void Save(IRepositoryCliente repository)
-        {
-            repository.Create(this);
-        }
+        public string Endereco { get; set; }
 
     }
 }

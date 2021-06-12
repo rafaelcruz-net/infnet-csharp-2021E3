@@ -69,9 +69,9 @@ namespace sistema_entrega_repositorio.Arquivo
             var maxId = 0;
 
             if (this.Clientes.Count > 0)
-                maxId = this.Clientes.Max(x => x.Id) + 1;
+                maxId = this.Clientes.Max(x => x.IdCliente) + 1;
 
-            cliente.Id = maxId;
+            cliente.IdCliente = maxId;
 
             this.Clientes.Add(cliente);
 
@@ -79,7 +79,7 @@ namespace sistema_entrega_repositorio.Arquivo
 
         public void Delete(Cliente cliente)
         {
-            var client_delete = this.Clientes.Find(x => x.Id == cliente.Id);
+            var client_delete = this.Clientes.Find(x => x.IdCliente == cliente.IdCliente);
             Clientes.Remove(client_delete);
         }
 
@@ -90,7 +90,7 @@ namespace sistema_entrega_repositorio.Arquivo
 
         public Cliente GetCliente(int id)
         {
-            return this.Clientes.Find(x => x.Id == id);
+            return this.Clientes.Find(x => x.IdCliente == id);
         }
 
         public void Update(Cliente cliente, int id)
