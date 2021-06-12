@@ -59,12 +59,29 @@ namespace sistema_entrega_repositorio.Database
             {
                 var sql = @"SELECT * FROM CLIENTE WHERE IdCliente = @p1";
 
-                var resultado = conn.QueryFirstOrDefault<Cliente>(sql, new
-                {
-                    p1 = id
-                });
+                conn.Open();
+                
+                var command = conn.CreateCommand();
 
-                return resultado;
+                command.CommandText = sql;
+                command.CommandType = System.Data.CommandType.Text;
+                command.Parameters.Add(new SqlParameter("@p1", id));
+
+                var result = command.ExecuteReader();
+
+                Cliente cliente = new Cliente();
+
+                while (result.Read())
+                {
+                    cliente.Email = result[2].ToString();
+                    cliente.Nome = result[1].ToString();
+                    cliente.IdCliente = Convert.ToInt32(result[0]);
+                    cliente.Endereco = result[3].ToString();
+                }
+
+                conn.Close();
+
+                return cliente;
             }
         }
 
