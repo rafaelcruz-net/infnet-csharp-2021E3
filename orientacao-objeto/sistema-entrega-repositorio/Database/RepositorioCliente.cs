@@ -16,14 +16,14 @@ namespace sistema_entrega_repositorio.Database
         {
             using (SqlConnection conn = new SqlConnection(Connection))
             {
-                var sql = @"INSERT INTO CLIENTE(Nome, Email, Endereco) Values(@p1, @p2, @p3);";
+                var sql = @"dbo.InsertCustomer";
 
                 conn.Execute(sql, new
                 {
-                    p1 = cliente.Nome,
-                    p2 = cliente.Email,
-                    p3 = cliente.Endereco
-                });
+                    Nome = cliente.Nome,
+                    Email = cliente.Email,
+                    Endereco = cliente.Endereco
+                }, commandType: System.Data.CommandType.StoredProcedure);
             }
 
         }
@@ -32,12 +32,12 @@ namespace sistema_entrega_repositorio.Database
         {
             using (SqlConnection conn = new SqlConnection(Connection))
             {
-                var sql = @"DELETE FROM CLIENTE WHERE IdCliente = @p1";
+                var sql = @"dbo.DeleteCustomer";
 
                 conn.Execute(sql, new
                 {
-                    p1 = cliente.IdCliente,
-                });
+                    IdCliente = cliente.IdCliente,
+                }, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
 
@@ -45,9 +45,9 @@ namespace sistema_entrega_repositorio.Database
         {
             using (SqlConnection conn = new SqlConnection(Connection))
             {
-                var sql = @"SELECT * FROM CLIENTE";
+                var sql = @"[dbo].[SelectAllCustomers]";
 
-                var resultado = conn.Query<Cliente>(sql);
+                var resultado = conn.Query<Cliente>(sql, commandType: System.Data.CommandType.StoredProcedure);
 
                 return resultado.AsList();
             }
@@ -57,22 +57,23 @@ namespace sistema_entrega_repositorio.Database
         {
             using (SqlConnection conn = new SqlConnection(Connection))
             {
-                var sql = @"SELECT * FROM CLIENTE WHERE IdCliente = @p1";
+                var sql = @"[dbo].[SelectCustomerById]";
 
                 conn.Open();
                 
                 var command = conn.CreateCommand();
 
                 command.CommandText = sql;
-                command.CommandType = System.Data.CommandType.Text;
-                command.Parameters.Add(new SqlParameter("@p1", id));
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.Parameters.Add(new SqlParameter("@IdCliente", id));
 
                 var result = command.ExecuteReader();
 
-                Cliente cliente = new Cliente();
+                Cliente cliente = null;
 
                 while (result.Read())
                 {
+                    cliente = new Cliente(); 
                     cliente.Email = result[2].ToString();
                     cliente.Nome = result[1].ToString();
                     cliente.IdCliente = Convert.ToInt32(result[0]);
@@ -89,20 +90,15 @@ namespace sistema_entrega_repositorio.Database
         {
             using (SqlConnection conn = new SqlConnection(Connection))
             {
-                var sql = @"UPDATE CLIENTE 
-                            SET Nome = @p1,
-                                Email = @p2,
-                                Endereco = @p3
-                            WHERE IdCliente = @p4
-                            ";
+                var sql = @"dbo.UpdateCustomer";
 
                 conn.Execute(sql, new
                 {
-                    p1 = cliente.Nome,
-                    p2 = cliente.Email,
-                    p3 = cliente.Endereco,
-                    p4 = id
-                });
+                    Nome = cliente.Nome,
+                    Email = cliente.Email,
+                    Endereco = cliente.Endereco,
+                    IdCliente = id
+                }, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
     }
